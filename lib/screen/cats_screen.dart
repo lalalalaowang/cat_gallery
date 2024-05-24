@@ -10,8 +10,14 @@ class CatsScreen extends StatefulWidget {
 class _CatsScreenState extends State<CatsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("cats"),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text("首页"),
+      ),
+      body: Column(
+        children: [],
+      ),
     );
   }
 }
