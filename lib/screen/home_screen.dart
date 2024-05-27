@@ -92,13 +92,12 @@ class _BottomTabButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const _BottomTabButton({
-    Key? key,
     required this.icon,
     required this.label,
     required this.value,
     required this.groupValue,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
