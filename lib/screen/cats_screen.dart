@@ -1,6 +1,7 @@
 import 'package:cat_gallery/http/network_repository.dart';
 import 'package:cat_gallery/model/dog_image.dart';
 import 'package:cat_gallery/widget/loading_dialog.dart';
+import 'package:cat_gallery/widget/tips_dialog.dart';
 import 'package:flutter/material.dart';
 
 class CatsScreen extends StatefulWidget {
@@ -15,23 +16,23 @@ class _CatsScreenState extends State<CatsScreen> {
 
   @override
   void initState() {
-    _switchToNextImg();
+    init();
     super.initState();
   }
 
-  // void init() async {
-  //   NetworkRepository repository = NetworkRepository();
-  //   List<DogImage> result = await repository.searchImages(limit: 1);
-  //   if (result.isNotEmpty) {
-  //     setState(() {
-  //       dogImage = result.first;
-  //     });
-  //   }
-  // }
+  void init() async {
+    NetworkRepository repository = NetworkRepository();
+    List<DogImage> result = await repository.searchImages(limit: 1);
+    if (result.isNotEmpty) {
+      setState(() {
+        dogImage = result.first;
+      });
+    }
+  }
 
   void _switchToNextImg() async {
     NetworkRepository repository = NetworkRepository();
-    _showDialog();
+    _showLoadingDialog();
     List<DogImage> result = await repository.searchImages(limit: 1);
     _hideDialog();
     if (result.isNotEmpty) {
@@ -41,30 +42,42 @@ class _CatsScreenState extends State<CatsScreen> {
     }
   }
 
-  Future<bool> _addToFavorites(String imgId) async {
+  void _addToFavorites(String imgId) async {
     final repository = NetworkRepository();
-    _showDialog();
+    _showLoadingDialog();
     final result = await repository.addToFavorites(imgId: imgId);
     _hideDialog();
     if (result) {
+      _showTips("收藏成功");
       _switchToNextImg();
+    } else {
+      _showTips("收藏失败");
     }
-    return result;
   }
 
-  Future<bool> _voteImg(String imgId, bool value) async {
+  void _voteImg(String imgId, bool value) async {
     final repository = NetworkRepository();
-    _showDialog();
+    _showLoadingDialog();
     final result = await repository.voteImg(imgId: imgId, value: value);
     _hideDialog();
 
     if (result) {
+      _showTips(value ? "点赞成功" : "点赞失败");
       _switchToNextImg();
+    } else {
+      _showTips("操作失败");
     }
-    return result;
   }
 
-  void _showDialog() {
+  void _showTips(String content) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return TipsDialog(content: content);
+        });
+  }
+
+  void _showLoadingDialog() {
     showDialog(
         context: context,
         builder: (context) {
