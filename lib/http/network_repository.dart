@@ -38,4 +38,31 @@ class NetworkRepository {
       return [];
     }
   }
+
+  Future<bool> addToFavorites({required String imgId}) async {
+    final response = await _dio.post(
+      favorate,
+      data: {"image_id": imgId},
+      options: Options(headers: {
+        "x-api-key": apiKey,
+        "Content-type": "application/json",
+      }),
+    );
+    return response.statusCode == 200;
+  }
+
+  Future<bool> voteImg({required String imgId, required bool value}) async {
+    final response = await _dio.post(
+      votes,
+      data: {
+        "image_id": imgId,
+        "value": value ? 1 : 0,
+      },
+      options: Options(headers: {
+        "x-api-key": apiKey,
+        "Content-type": "application/json",
+      }),
+    );
+    return response.statusCode == 201;
+  }
 }
