@@ -1,5 +1,5 @@
 import 'package:cat_gallery/http/network_repository.dart';
-import 'package:cat_gallery/model/dog_image.dart';
+import 'package:cat_gallery/model/cat_image.dart';
 import 'package:cat_gallery/widget/loading_dialog.dart';
 import 'package:cat_gallery/widget/tips_dialog.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class CatsScreen extends StatefulWidget {
 }
 
 class _CatsScreenState extends State<CatsScreen> {
-  DogImage? dogImage;
+  CatImage? catImage;
 
   @override
   void initState() {
@@ -22,10 +22,10 @@ class _CatsScreenState extends State<CatsScreen> {
 
   void init() async {
     NetworkRepository repository = NetworkRepository();
-    List<DogImage> result = await repository.searchImages(limit: 1);
+    List<CatImage> result = await repository.searchImages(limit: 1);
     if (result.isNotEmpty) {
       setState(() {
-        dogImage = result.first;
+        catImage = result.first;
       });
     }
   }
@@ -33,11 +33,11 @@ class _CatsScreenState extends State<CatsScreen> {
   void _switchToNextImg() async {
     NetworkRepository repository = NetworkRepository();
     _showLoadingDialog();
-    List<DogImage> result = await repository.searchImages(limit: 1);
+    List<CatImage> result = await repository.searchImages(limit: 1);
     _hideDialog();
     if (result.isNotEmpty) {
       setState(() {
-        dogImage = result.first;
+        catImage = result.first;
       });
     }
   }
@@ -101,24 +101,24 @@ class _CatsScreenState extends State<CatsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (dogImage != null) _buildImage(dogImage!.url),
+            if (catImage != null) _buildImage(catImage!.url),
             Row(
               children: [
                 _buildIconButton(
                     icon: "favorate.png",
                     onPressed: () {
-                      _addToFavorites(dogImage!.id);
+                      _addToFavorites(catImage!.id);
                     }),
                 const Spacer(),
                 _buildIconButton(
                     icon: "like.png",
                     onPressed: () {
-                      _voteImg(dogImage!.id, true);
+                      _voteImg(catImage!.id, true);
                     }),
                 _buildIconButton(
                     icon: "unlike.png",
                     onPressed: () {
-                      _voteImg(dogImage!.id, false);
+                      _voteImg(catImage!.id, false);
                     }),
               ],
             )

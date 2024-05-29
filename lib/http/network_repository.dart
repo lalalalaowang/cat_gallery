@@ -1,5 +1,6 @@
 import 'package:cat_gallery/model/api.dart';
-import 'package:cat_gallery/model/dog_image.dart';
+import 'package:cat_gallery/model/breed.dart';
+import 'package:cat_gallery/model/cat_image.dart';
 import 'package:dio/dio.dart';
 
 class NetworkRepository {
@@ -19,7 +20,7 @@ class NetworkRepository {
     return _instance;
   }
 
-  Future<List<DogImage>> searchImages({required int limit}) async {
+  Future<List<CatImage>> searchImages({required int limit}) async {
     final response = await _dio.get(
       search,
       queryParameters: {"limit": limit},
@@ -32,7 +33,7 @@ class NetworkRepository {
     if (response.statusCode == 200) {
       final List<dynamic> result = response.data ?? [];
       return result
-          .map((e) => DogImage.formJson(e as Map<String, dynamic>))
+          .map((e) => CatImage.fromJson(e as Map<String, dynamic>))
           .toList();
     } else {
       return [];
@@ -64,5 +65,25 @@ class NetworkRepository {
       }),
     );
     return response.statusCode == 201;
+  }
+
+  Future<List<Breed>> getBreeds({required int limit, required int page}) async {
+    final response = await _dio.get(breeds,
+        queryParameters: {
+          "limit": limit,
+          "page": page,
+        },
+        options: Options(headers: {
+          "x-api-key": apiKey,
+          "Content-type": "application/json"
+        }));
+    if (response.statusCode == 200) {
+      final List<dynamic> list = response.data ?? [];
+      return list
+          .map((e) => Breed.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } else {
+      return [];
+    }
   }
 }

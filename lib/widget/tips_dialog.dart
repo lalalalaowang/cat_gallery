@@ -19,7 +19,7 @@ class TipsDialog extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Text(content),
+            Align(alignment: Alignment.center, child: Text(content)),
             Align(
               alignment: Alignment.topRight,
               child: IconButton(

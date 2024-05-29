@@ -4,3 +4,4 @@ const baseUrl = "https://api.thecatapi.com/v1/";
 const search = "images/search";
 const favorate = "favourites";
 const votes = "votes";
+const breeds = "breeds";
