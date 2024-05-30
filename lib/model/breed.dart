@@ -7,11 +7,11 @@ part 'breed.g.dart';
 class Breed {
   final String id;
   final String name;
-  final String description;
-  final String temperament;
+  final String? description;
+  final String? temperament;
   @JsonKey(name: "life_span")
   final String lifeSpan;
-  final CatImage image;
+  final CatImage? image;
 
   const Breed(
       {required this.id,
